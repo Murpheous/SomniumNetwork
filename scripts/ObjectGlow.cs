@@ -10,8 +10,6 @@ namespace SyncedControls.Example
 
         [SerializeField]
         private Color glowColor = Color.yellow; // Default glow color
-        [SerializeField] 
-        private PhotonSyncedSlider glowSlider;
         [SerializeField]
         private bool debug = false; // Enable or disable debug logging
         private bool hasEmission = false;
@@ -19,7 +17,6 @@ namespace SyncedControls.Example
         private float glowIntensity = 1.0f; // Default intensity
         private MeshRenderer meshRenderer;
         private Material glowMaterial;
-
 
         public Color GlowColor
         {
@@ -60,15 +57,6 @@ namespace SyncedControls.Example
         }
         void Awake()
         {
-            if (glowSlider != null)
-            {
-                glowSlider.SetLimits(0f, 1f);
-                glowSlider.SetValue(glowIntensity);
-                glowSlider.Interactable = true;
-                glowSlider.DisplayScale = 100f;
-                glowSlider.TypeText = gameObject.name + "\nGlow";
-                glowSlider.ValueSuffix = "%";
-            }
             meshRenderer = GetComponent<MeshRenderer>();
             // Ensure the object has a Renderer component
             if (meshRenderer == null)

@@ -2,6 +2,7 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace SyncedControls.Example
@@ -14,7 +15,7 @@ namespace SyncedControls.Example
         [SerializeField]
         Rigidbody networkedRigidBody;
 
-        public toggleEvent OnValueChanged;
+        public UnityEvent<bool> onValueChanged;
 
         [Header("Just here to see in inspector")]
         [SerializeField]
@@ -79,7 +80,8 @@ namespace SyncedControls.Example
 
         void Awake()
         {   
-            OnValueChanged = new toggleEvent();
+            if (onValueChanged == null)
+                onValueChanged = new UnityEvent<bool>();
             if (toggle == null)
                 toggle = GetComponent<Toggle>();
             _localState = toggle.isOn;
@@ -92,6 +94,15 @@ namespace SyncedControls.Example
                 rbTransform = networkedRigidBody.transform;
                 networkObject = networkedRigidBody.GetComponent<NetworkObject>();
             }
+        }
+
+        private void Start()
+    
+        {
+            // Initialize the Rigidbody's state based on the toggle's initial state            
+            rbTransform.localEulerAngles = new Vector3(rbTransform.localEulerAngles.x, _localState ? 180 : 0, rbTransform.localEulerAngles.z);
+            _reportedState = _localState; // Initialize reported state
+            onValueChanged.Invoke(_localState); // Invoke the event with the initial state
         }
 
         public void onPointerEnter()
@@ -108,13 +119,11 @@ namespace SyncedControls.Example
             if (networkedRigidBody != null)
             {
                 if (NetworkState != isOn)
-                {
                     NetworkState = isOn; // Update the Rigidbody's state
-                }
             }
             else
             {
-                OnValueChanged.Invoke(isOn);
+                onValueChanged.Invoke(isOn);
             }
         }
         void OnEnable()
@@ -143,7 +152,7 @@ namespace SyncedControls.Example
                     }
                     if (_reportedState != newValue)
                     {
-                        OnValueChanged.Invoke(newValue); // Invoke the event with the new state
+                        onValueChanged.Invoke(newValue); // Invoke the event with the new state
                         _reportedState = newValue; // Update the reported state
                     }
                 }
