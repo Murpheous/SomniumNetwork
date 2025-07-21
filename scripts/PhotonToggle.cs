@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     [RequireComponent(typeof(Toggle))]
     public class PhotonToggle : MonoBehaviour
@@ -14,7 +14,7 @@ namespace QuantumScatter
         [SerializeField]
         Rigidbody networkedRigidBody;
 
-        public toggleEvent onValueChanged;
+        public toggleEvent OnValueChanged;
 
         [Header("Just here to see in inspector")]
         [SerializeField]
@@ -79,7 +79,7 @@ namespace QuantumScatter
 
         void Awake()
         {   
-            onValueChanged = new toggleEvent();
+            OnValueChanged = new toggleEvent();
             if (toggle == null)
                 toggle = GetComponent<Toggle>();
             _localState = toggle.isOn;
@@ -114,7 +114,7 @@ namespace QuantumScatter
             }
             else
             {
-                onValueChanged.Invoke(isOn);
+                OnValueChanged.Invoke(isOn);
             }
         }
         void OnEnable()
@@ -143,7 +143,7 @@ namespace QuantumScatter
                     }
                     if (_reportedState != newValue)
                     {
-                        onValueChanged.Invoke(newValue); // Invoke the event with the new state
+                        OnValueChanged.Invoke(newValue); // Invoke the event with the new state
                         _reportedState = newValue; // Update the reported state
                     }
                 }

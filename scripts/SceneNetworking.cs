@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     /// <summary>
     /// This class receive network events from photon and can register network objects in the scene.

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     public class floatEvent : UnityEvent<float> { }
     public class toggleEvent : UnityEvent<bool> { }
@@ -14,7 +14,7 @@ namespace QuantumScatter
 
     public interface ISliderInterface 
     {
-        public bool PointerIsDown { get; }
+        public bool PointerIsMoving { get; }
 
         public bool Interactable { get; set; }
 
@@ -27,15 +27,8 @@ namespace QuantumScatter
         public float MaxValue { get; set; }
         public float MinValue { get; set; }
 
-        public string TitleText { get; set; }
-        public string SliderUnit { get; set; }
+        public string TypeText { get; set; }
+        public string ValueSuffix { get; set; }
 
-        // Event Subscription
-        public void subscribeValue(UnityAction<float> call);
-        public void subscribePointer(UnityAction<bool> call);
-
-        // Event Unsubscription
-        public void unsubscribeValue(UnityAction<float> call);
-        public void unsubscribePointer(UnityAction<bool> call);
     }
 }

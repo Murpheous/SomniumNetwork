@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     public class DebugUI : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace QuantumScatter
         {
             if (_terminal == null || _scroll == null)
             { 
-                Debug.LogError($"[{nameof(DebugUI)}] Terminal or ScrollRect is not assigned in the inspector.");
+                DebugUI.LogError($"[{nameof(DebugUI)}] Terminal or ScrollRect is not assigned in the inspector.");
                 return;
             }
 

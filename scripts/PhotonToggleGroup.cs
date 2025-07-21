@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     [RequireComponent(typeof(ToggleGroup))]
     public class PhotonToggleGroup : MonoBehaviour
@@ -71,7 +71,7 @@ namespace QuantumScatter
                     networkObject.RequestStateAuthority();
             }
         }
-        public void onValueChanged(bool value)
+        public void OnValueChanged(bool value)
         {
             if (toggles == null || toggles.Length == 0)
             {
@@ -89,7 +89,7 @@ namespace QuantumScatter
                     {
                         activeToggle = i;
                         if (debug)
-                            DebugUI.Log(string.Format("{0} onValueChanged:Toggle[{1}]=ON", gameObject.name, i));
+                            DebugUI.Log(string.Format("{0} OnValueChanged:Toggle[{1}]=ON", gameObject.name, i));
                         break;
                     }
                 }
@@ -131,7 +131,7 @@ namespace QuantumScatter
                 }
                 toggles[i].group = togGroup;
                 toggles[i].SetIsOnWithoutNotify(i == _reportedState);
-                toggles[i].onValueChanged.AddListener(onValueChanged);
+                toggles[i].onValueChanged.AddListener(OnValueChanged);
             }
             numToggles = toggles.Length > 0 ? toggles.Length : 1;
             rbState = _reportedState;

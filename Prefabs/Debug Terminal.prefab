@@ -510,7 +510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1529965125060603311}
-  - component: {fileID: 7021462313083083647}
+  - component: {fileID: 5886251434181994485}
   - component: {fileID: 732232056798554514}
   - component: {fileID: 4751314501505189309}
   - component: {fileID: 6287155225047775262}
@@ -541,7 +541,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &7021462313083083647
+--- !u!114 &5886251434181994485
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1657841740451797488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdbd46818379b494e84afa5890e81ec7, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fb209f7cfcd581498d56bff7ab3d11b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _terminal: {fileID: 2196330736342795656}
@@ -2157,7 +2157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1423174168150353324}
-  - component: {fileID: 8454927762477422036}
+  - component: {fileID: 4318158572938110848}
   m_Layer: 0
   m_Name: 3D Terminal (You can disable me)
   m_TagString: Untagged
@@ -2181,7 +2181,7 @@ Transform:
   - {fileID: 1924874763597963623}
   m_Father: {fileID: 8709258414793349774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8454927762477422036
+--- !u!114 &4318158572938110848
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2190,7 +2190,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9177486796779052199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdbd46818379b494e84afa5890e81ec7, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fb209f7cfcd581498d56bff7ab3d11b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _terminal: {fileID: 2987060677887364789}

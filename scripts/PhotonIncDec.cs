@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     public class PhotonIncDec : MonoBehaviour
     {
@@ -14,8 +14,8 @@ namespace QuantumScatter
         [SerializeField] Button DecButton;
 
         [SerializeField] int _value = 0;
-        [SerializeField] int minValue = 0;
-        [SerializeField] int maxValue = 10;
+        [SerializeField] int _minValue = 0;
+        [SerializeField] int _maxValue = 10;
 
 
         public integerEvent onValue;
@@ -47,22 +47,22 @@ namespace QuantumScatter
 
         public int MinValue
         {
-            get => minValue;
+            get => _minValue;
             set
             {
                 if (value < -179)
                     value = 179;
-                minValue = value;
+                _minValue = value;
             }
         }
         public int MaxValue
         {
-            get => maxValue;
+            get => _maxValue;
             set
             {
                 if (value > 179)
                     value = 179;
-                maxValue = value;
+                _maxValue = value;
             }
         }
 
@@ -98,7 +98,7 @@ namespace QuantumScatter
         }
         public void incValue()
         {
-            int incValue = Mathf.Clamp(_value + 1, minValue, maxValue);
+            int incValue = Mathf.Clamp(_value + 1, _minValue, _maxValue);
             if (_reportedValue != incValue)
                 rbValue = incValue;
             if (debug)
@@ -107,7 +107,7 @@ namespace QuantumScatter
 
         public void decValue()
         {
-            int decValue = Mathf.Clamp(_value - 1, minValue, maxValue);
+            int decValue = Mathf.Clamp(_value - 1, _minValue, _maxValue);
             if (_reportedValue != decValue)
                 rbValue = decValue;
             if (debug)
@@ -150,7 +150,7 @@ namespace QuantumScatter
                 if (rbTransform.hasChanged)
                 { // Check if the rigidbody has moved from its last synced position
                     rbTransform.hasChanged = false;
-                    int newValue = Mathf.Clamp(Mathf.RoundToInt(rbTransform.eulerAngles.y),minValue,maxValue);
+                    int newValue = Mathf.Clamp(Mathf.RoundToInt(rbTransform.eulerAngles.y),_minValue,_maxValue);
                     if (debug)
                     {
                         DebugUI.Log(string.Format("{0} Update: <br>   EulerAngles.y={1} newValue={2}", gameObject.name, rbTransform.eulerAngles.y, newValue));

@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     public class ObjectTransfer : MonoBehaviour, ITweenClient
     {

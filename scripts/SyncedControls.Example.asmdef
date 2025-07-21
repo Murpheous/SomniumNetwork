@@ -1,9 +1,8 @@
 {
-    "name": "CommunityNet.SyncedControls",
-    "rootNamespace": "",
+    "name": "SyncedControls.Example",
+    "rootNamespace": "SyncedControls.Example",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:1baf1ffff1031e948b3b228ab3453251"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

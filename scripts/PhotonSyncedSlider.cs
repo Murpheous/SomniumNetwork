@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace QuantumScatter
+namespace SyncedControls.Example
 {
     [RequireComponent(typeof(Slider))]
-    public class PhotonSyncedSlider : MonoBehaviour, ISliderInterface
+    public class PhotonSyncedSlider : MonoBehaviour,ISliderInterface
     {
         [SerializeField]
         private Rigidbody networkedRigibody;
@@ -22,7 +22,7 @@ namespace QuantumScatter
         [SerializeField]
         private TextMeshProUGUI sliderLabel;
         [SerializeField]
-        private TextMeshProUGUI sliderTitle;
+        private TextMeshProUGUI _sliderType;
         [SerializeField]
         private bool hideLabel = false;
         [SerializeField]
@@ -30,7 +30,7 @@ namespace QuantumScatter
         [SerializeField]
         private bool displayInteger = false;
         [SerializeField]
-        private string sliderUnit;
+        private string _valueSuffix;
         [SerializeField]
         private float _value;
 
@@ -44,6 +44,9 @@ namespace QuantumScatter
 
         [SerializeField]
         private bool interactable = true;
+        [SerializeField,Tooltip("Enable Debug)")]
+        private bool debug = false;
+
         [Header("Just to see values in the inspector")]
 
         [SerializeField] private float _syncedValue;
@@ -54,35 +57,18 @@ namespace QuantumScatter
         //[SerializeField] 
         private NetworkObject networkObject;
         // Event to report synced value changes
-        public floatEvent reportValue;
+        [SerializeField]
+        public UnityEvent<float> OnValueChanged;
         // Event to report pointer state
-        public toggleEvent reportPointer;
+        public UnityEvent<bool> OnPointerMovement;
 
         // Flag to indicate if the pointer is currently down
-        private bool _localPointerDown = false;
-        private bool _pointerIsDown = false;
-        public bool PointerIsDown
+        private bool _pointerIsMoving = false;
+        public bool PointerIsMoving
         {
-            get => _pointerIsDown;
+            get => _pointerIsMoving;
         }
 
-        public void subscribeValue(UnityAction<float> call)
-        {
-            reportValue.AddListener(call);
-        }
-        public void subscribePointer(UnityAction<bool> call)
-        {
-            reportPointer.AddListener(call);
-        }
-        // Event Unsubscription
-        public void unsubscribeValue(UnityAction<float> call)
-        {
-            reportValue.RemoveListener(call);
-        }
-        public void unsubscribePointer(UnityAction<bool> call)
-        {
-            reportPointer.RemoveListener(call);
-        }
         public bool Interactable
         {
             get
@@ -180,27 +166,27 @@ namespace QuantumScatter
             minValue = min;
             maxValue = max;
         }
-        public string TitleText
+        public string TypeText
         {
             get
             {
-                if (sliderTitle == null)
+                if (_sliderType == null)
                     return "";
-                return sliderTitle.text;
+                return _sliderType.text;
             }
             set
             {
-                if (sliderTitle == null)
+                if (_sliderType == null)
                     return;
-                sliderTitle.text = value;
+                _sliderType.text = value;
             }
         }
-        public string SliderUnit
+        public string ValueSuffix
         {
-            get => sliderUnit;
+            get => _valueSuffix;
             set
             {
-                sliderUnit = value;
+                _valueSuffix = value;
                 UpdateLabel();
             }
         }
@@ -212,9 +198,9 @@ namespace QuantumScatter
             if (displayInteger)
                 displayValue = Mathf.RoundToInt(displayValue);
             if (unitsInteger || displayInteger)
-                sliderLabel.text = string.Format("{0}{1}", (int)displayValue, sliderUnit);
+                sliderLabel.text = string.Format("{0}{1}", (int)displayValue, ValueSuffix);
             else
-                sliderLabel.text = string.Format("{0:0.0}{1}", displayValue, sliderUnit);
+                sliderLabel.text = string.Format("{0:0.0}{1}", displayValue, ValueSuffix);
         }
 
         public float MaxValue
@@ -259,13 +245,14 @@ namespace QuantumScatter
             private set
             {
                 _reportedValue = value;
-                reportValue.Invoke(_reportedValue);
+                //if (debug) // Spams a lot of messages ony use if needed
+                //    DebugUI.Log($"{gameObject.name}-ReportedValue: {_reportedValue}");
+                OnValueChanged.Invoke(_reportedValue);
             }
         }
 
         public void onPointer(bool value)
         {
-            _localPointerDown = value;
             // Main purpose of pointer on slider is to grab network Authority
             if (value && networkObject != null && networkObject.Runner != null)
             {
@@ -293,7 +280,7 @@ namespace QuantumScatter
             if (Mathf.Abs(_reportedValue - _syncedValue) > smoothThreshold)
             {
                 if (!isSmoothing)
-                    reportPointer.Invoke(true);
+                    OnPointerMovement.Invoke(true);
                 isSmoothing = true;
                 ReportedValue = Mathf.SmoothDamp(_reportedValue, _syncedValue, ref smthVel, 0.1f * smoothRate);
             }
@@ -303,7 +290,7 @@ namespace QuantumScatter
                 if (isSmoothing)
                 {
                     isSmoothing = false;
-                    reportPointer.Invoke(false);
+                    OnPointerMovement.Invoke(false);
                 }
             }
         }
@@ -316,20 +303,22 @@ namespace QuantumScatter
                 rbTransform = networkedRigibody.transform;
                 networkObject = networkedRigibody.GetComponent<NetworkObject>();
             }
-            reportValue = new floatEvent();
-            reportPointer = new toggleEvent();
+            if (OnValueChanged == null)
+                OnValueChanged = new floatEvent();
+            if (OnPointerMovement == null)
+                OnPointerMovement = new toggleEvent();
             mySlider = GetComponent<Slider>();
             mySlider.onValueChanged.AddListener(OnSliderValue);
             //setCursorTrack();
-            if (sliderLabel != null && hideLabel)
-                sliderLabel.text = "";
+            if (sliderLabel != null)
+                sliderLabel.gameObject.SetActive(!hideLabel);
             mySlider.interactable = interactable;
             mySlider.minValue = 0f;
             mySlider.maxValue = 1f;
         }
         public void Start()
         {
-            float cursorPos = Mathf.Clamp01(Mathf.InverseLerp(minValue, maxValue, _syncedValue));
+            float cursorPos = Mathf.Clamp01(Mathf.InverseLerp(minValue, maxValue, _value));
             mySlider.SetValueWithoutNotify(cursorPos);
             if (rbTransform != null)
             {
