@@ -1111,6 +1111,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3931899019052202420}
   - {fileID: 1560882759}
   - {fileID: 1773758698}
   m_Father: {fileID: 949104012}
@@ -1809,7 +1810,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3931899019052202420}
   - {fileID: 1147071309}
   m_Father: {fileID: 486740930}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2412,7 +2412,7 @@ MonoBehaviour:
   BoundsIsDisplay: 0
   World360PreviewPos: {x: 0, y: 0, z: 0}
   IsOpen360Preview: 0
-  IsEditSpawnPos: 0
+  IsEditSpawnPos: 1
   ShowRespawnHeight: 0
   ValidationData: []
   InfoIsOpen: 0
@@ -2435,7 +2435,7 @@ MonoBehaviour:
     Free:
       Count: 4
       MaxCount: 10
-      AvailableSize: 277683280
+      AvailableSize: 277682992
     Paid:
       Entries: []
   OwnedTokens: []
@@ -2613,8 +2613,8 @@ MonoBehaviour:
       Version: 1.10.0
   Attributes:
     Container: []
-  SpawnPointPos: {x: 0, y: 0, z: -1}
-  SpawnPointDirection: 0
+  SpawnPointPos: {x: 0, y: 0, z: -0.5}
+  SpawnPointDirection: 183
   RespawnHeightY: -20
   RespawningBehavior: 0
   Subcategory: 1
@@ -3588,12 +3588,12 @@ PrefabInstance:
     - target: {fileID: 3931899018356448435, guid: f348c66e40745274387b8bafb7c7e3bf,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -95.5
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 3931899018356448435, guid: f348c66e40745274387b8bafb7c7e3bf,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 60.4
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3931899018356448435, guid: f348c66e40745274387b8bafb7c7e3bf,
         type: 3}
@@ -4638,7 +4638,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Spotlight '
+  m_text: Synced Tween
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4903,11 +4903,11 @@ RectTransform:
   - {fileID: 882413551279987546}
   - {fileID: 1553756369}
   - {fileID: 3931899019036263248}
-  m_Father: {fileID: 989517966}
+  m_Father: {fileID: 561989401}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -95.5, y: 60.4}
+  m_AnchoredPosition: {x: 30, y: 60}
   m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3931899019052202421
