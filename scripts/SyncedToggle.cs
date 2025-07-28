@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace SyncedControls.Example
 {
     [RequireComponent(typeof(Toggle))]
-    public class PhotonToggle : MonoBehaviour
+    public class SyncedToggle : MonoBehaviour
     {
         [SerializeField]
         Toggle toggle;

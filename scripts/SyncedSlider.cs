@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace SyncedControls.Example
 {
     [RequireComponent(typeof(Slider))]
-    public class PhotonSyncedSlider : MonoBehaviour,ISliderInterface
+    public class SyncedSlider : MonoBehaviour,ISliderInterface
     {
         [SerializeField]
         private Rigidbody networkedRigibody;

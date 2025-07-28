@@ -1,13 +1,11 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SyncedControls.Example
 {
     [RequireComponent(typeof(ToggleGroup))]
-    public class PhotonToggleGroup : MonoBehaviour
+    public class SyncedToggleGroup : MonoBehaviour
     {
         [SerializeField]
         Rigidbody networkedRigidBody;

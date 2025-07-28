@@ -1,12 +1,10 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SyncedControls.Example
 {
-    public class PhotonIncDec : MonoBehaviour
+    public class SyncedIncDec : MonoBehaviour
     {
         [SerializeField]
         Rigidbody networkedRigidBody;
