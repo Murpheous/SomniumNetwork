@@ -10,8 +10,6 @@ namespace SyncedControls.Example
 
         [SerializeField]
         private Color glowColor = Color.yellow; // Default glow color
-        [SerializeField]
-        private bool debug = false; // Enable or disable debug logging
         private bool hasEmission = false;
         [SerializeField,Range(0f,1f)]
         private float glowIntensity = 1.0f; // Default intensity
@@ -39,8 +37,6 @@ namespace SyncedControls.Example
         }
         private void UpdateColor()
         {
-            //if (debug) // Debugging output - can spam the console
-            //    DebugUI.Log($"{gameObject.name} UpdateColor: Intensity={glowIntensity}");
             if (glowMaterial == null)
                 return;
             Color emissionColor = glowColor * glowIntensity;
@@ -61,24 +57,24 @@ namespace SyncedControls.Example
             // Ensure the object has a Renderer component
             if (meshRenderer == null)
             {
-                DebugUI.LogError("ObjectGlow requires a Renderer component.");
+                Debug.LogError("ObjectGlow requires a Renderer component.");
                 return;
             }
             glowMaterial = meshRenderer.material;
             if (glowMaterial == null)
             {
-                DebugUI.LogError("ObjectGlow requires a material to be assigned.");
+                Debug.LogError("ObjectGlow requires a material to be assigned.");
                 return;
             }
             if (glowMaterial.HasProperty("_EmissionColor"))
             {
-                DebugUI.Log($"ObjectGlow: {gameObject.name} supports emission.");
+                Debug.Log($"ObjectGlow: {gameObject.name} supports emission.");
                 glowMaterial.EnableKeyword("_EMISSION");
                 hasEmission = true;
             }
             else
             {
-                DebugUI.LogWarning("The assigned material does not support emission.");
+                Debug.LogWarning("The assigned material does not support emission.");
                 hasEmission = false;
             }
         }

@@ -44,8 +44,6 @@ namespace SyncedControls.Example
 
         [SerializeField]
         private bool interactable = true;
-        [SerializeField,Tooltip("Enable Debug)")]
-        private bool debug = false;
 
         [Header("Just to see values in the inspector")]
 
@@ -245,8 +243,6 @@ namespace SyncedControls.Example
             private set
             {
                 _reportedValue = value;
-                //if (debug) // Spams a lot of messages ony use if needed
-                //    DebugUI.Log($"{gameObject.name}-ReportedValue: {_reportedValue}");
                 OnValueChanged.Invoke(_reportedValue);
             }
         }
