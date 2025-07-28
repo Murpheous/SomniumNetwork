@@ -411,18 +411,6 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 301539916}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &368542995 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8969571752174639937, guid: ffa0fe2925302e1489537cb43547fe78,
-    type: 3}
-  m_PrefabInstance: {fileID: 1074494420}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &384152577
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +424,7 @@ GameObject:
   - component: {fileID: 384152580}
   - component: {fileID: 384152579}
   m_Layer: 5
-  m_Name: TogChocolate
+  m_Name: TogGreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -464,9 +452,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.36862746, g: 0.36078432, b: 0.36078432, a: 1}
-    m_HighlightedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
-    m_PressedColor: {r: 0, g: 0.4745098, b: 1, a: 1}
-    m_SelectedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
+    m_HighlightedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
+    m_PressedColor: {r: 0.011764695, g: 0.1518427, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -986,7 +974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
   m_Color: {r: 0.89411765, g: 0.89411765, b: 0.89411765, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1577,7 +1565,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glowColor: {r: 0.015686274, g: 0.7493017, b: 1, a: 1}
-  debug: 0
   glowIntensity: 0.687
 --- !u!1 &700319579
 GameObject:
@@ -1609,7 +1596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
   m_Color: {r: 0.89411765, g: 0.89411765, b: 0.89411765, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1667,7 +1654,7 @@ GameObject:
   - component: {fileID: 770343208}
   - component: {fileID: 770343207}
   m_Layer: 5
-  m_Name: TogMocha
+  m_Name: TogBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1764,9 +1751,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.36862746, g: 0.36078432, b: 0.36078432, a: 1}
-    m_HighlightedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
-    m_PressedColor: {r: 0, g: 0.4745098, b: 1, a: 1}
-    m_SelectedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
+    m_HighlightedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
+    m_PressedColor: {r: 0.011764695, g: 0.1518427, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2483,7 +2470,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Mocha
+  m_text: Blue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2688,134 +2675,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
-      propertyPath: debug
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: _value
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: sliderUnit
-      value: '%'
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: smoothRate
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: _sliderType
-      value: 
-      objectReference: {fileID: 368542995}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: _valueSuffix
-      value: '%'
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
       propertyPath: networkedRigibody
       value: 
       objectReference: {fileID: 1608216921}
     - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
-      propertyPath: OnValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
       propertyPath: OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1670641742}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1709662062}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 668883482}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_GlowIntensity
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_GlowIntensity
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: onGlowIntensity
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CommunityNet.SyncedControls.ObjectGlow, CommunityNet.SyncedControls
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CommunityNet.SyncedControls.ObjectGlow, CommunityNet.SyncedControls
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: CommunityNet.SyncedControls.ObjectGlow, CommunityNet.SyncedControls
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 8969571751951368413, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2825,13 +2692,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8969571752174639937, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: m_text
-      value: 'Wall 2
-
-        Glow'
       objectReference: {fileID: 0}
     - target: {fileID: 8969571752320557268, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
@@ -2955,38 +2815,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0.62352943
       objectReference: {fileID: 0}
     - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1670641742}
-    - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: onGlowIntensity
-      objectReference: {fileID: 0}
-    - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CommunityNet.SyncedControls.ObjectGlow, CommunityNet.SyncedControls
-      objectReference: {fileID: 0}
-    - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.29411766
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3753,7 +3588,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glowColor: {r: 1, g: 0.015686274, b: 0.5580367, a: 1}
-  debug: 0
   glowIntensity: 0.317
 --- !u!1 &1337523545
 GameObject:
@@ -3827,7 +3661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tea
+  m_text: Green
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4700,8 +4534,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
-  m_Color: {r: 0.8962264, g: 0.7905393, b: 0.7905393, a: 1}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
+  m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4877,7 +4711,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glowColor: {r: 1, g: 0.4454409, b: 0.015686274, a: 1}
-  debug: 0
   glowIntensity: 0.5
 --- !u!1 &1709662057
 GameObject:
@@ -4998,7 +4831,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glowColor: {r: 1, g: 0.015686274, b: 0.9978104, a: 1}
-  debug: 0
   glowIntensity: 0.468
 --- !u!1 &1724662656
 GameObject:
@@ -5049,8 +4881,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
-  m_Color: {r: 0.08235294, g: 0.08235294, b: 0.08235294, a: 1}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
+  m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5364,16 +5196,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8969571752666551115, guid: ffa0fe2925302e1489537cb43547fe78,
-        type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 4
       objectReference: {fileID: 0}
@@ -5515,7 +5337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
   m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -5625,10 +5447,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The slider control is based on a synced slider control method developed
-    by VRC creator Iffn, which hides network jitter by locally interpolating the
-    output value, thereby reducing the reliance on high update rates over the network
-    for smooth operation.
+  m_text: The slider control is based on a synced slider model developed by VRC creator
+    Iffn, that masks network jitter by locally interpolating the output value, to
+    reduce the reliance on high update rates over the network for smooth operation.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5853,9 +5674,7 @@ MonoBehaviour:
     projects.
 
 
-
     So far, there''s a synchronised slider, toggle, and toggle group.
-
 
 
     I''m
@@ -5989,7 +5808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
   m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -6225,7 +6044,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Coffee
+  m_text: Red
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6426,7 +6245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
   m_Color: {r: 0.89411765, g: 0.89411765, b: 0.89411765, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -6485,9 +6304,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.36862746, g: 0.36078432, b: 0.36078432, a: 1}
-    m_HighlightedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
-    m_PressedColor: {r: 0, g: 0.4745098, b: 1, a: 1}
-    m_SelectedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
+    m_HighlightedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
+    m_PressedColor: {r: 0.011764695, g: 0.1518427, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -6510,7 +6329,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!224 &1436662822024733575
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6545,7 +6364,7 @@ GameObject:
   - component: {fileID: 651209040244419650}
   - component: {fileID: 1364986836906619287}
   m_Layer: 5
-  m_Name: TogCoffee
+  m_Name: TogRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6571,7 +6390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
   m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -6648,8 +6467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d862c4d6d47b37348a252ad3f6139791, type: 2}
-  m_Color: {r: 0.08235294, g: 0.08235294, b: 0.08235294, a: 1}
+  m_Material: {fileID: 2100000, guid: 651d7279608e2d94991438fb436dc9bf, type: 2}
+  m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7099,9 +6918,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.36862746, g: 0.36078432, b: 0.36078432, a: 1}
-    m_HighlightedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
-    m_PressedColor: {r: 0, g: 0.4726324, b: 1, a: 1}
-    m_SelectedColor: {r: 0.1254902, g: 0.5882353, b: 0.9529412, a: 1}
+    m_HighlightedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
+    m_PressedColor: {r: 0.011764695, g: 0.1518427, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0, g: 0.29411766, b: 0.62352943, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1.11
     m_FadeDuration: 0.1
@@ -7431,7 +7250,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8481197292675355776}
         m_TargetAssemblyTypeName: SyncedControls.Example.ToggledTween, SyncedControls.Example
-        m_MethodName: set_ToggleState
+        m_MethodName: set_enabled
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
