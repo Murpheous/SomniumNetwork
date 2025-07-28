@@ -1334,7 +1334,9 @@ MonoBehaviour:
   - {x: 2, y: 0, z: 0}
   tween: 0
   startPoints: []
-  endPoints: []
+  endPoints:
+  - {x: -3, y: 0, z: 0}
+  - {x: 3, y: 0, z: 0}
 --- !u!1 &561989400
 GameObject:
   m_ObjectHideFlags: 0
@@ -7250,7 +7252,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8481197292675355776}
         m_TargetAssemblyTypeName: SyncedControls.Example.ToggledTween, SyncedControls.Example
-        m_MethodName: set_enabled
+        m_MethodName: set_ToggleState
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
