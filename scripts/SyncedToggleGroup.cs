@@ -124,11 +124,13 @@ namespace SyncedControls.Example
         {
             numToggles = toggles.Length > 0 ? toggles.Length : 1;
             rbState = _reportedState;
+            onSelectionChanged.Invoke(_reportedState); // Invoke the event with the new state
             started = true;
         }
 
         void OnEnable()
         {
+            int nSelected =  0;
             for (int i = 0; i < toggles.Length; i++)
             {
                 if (toggles[i] == null)
@@ -137,9 +139,12 @@ namespace SyncedControls.Example
                     continue;
                 }
                 toggles[i].group = togGroup;
-                toggles[i].SetIsOnWithoutNotify(i == _reportedState);
+                if (toggles[i].isOn)
+                    nSelected = i; // Set i to selected toggle
                 toggles[i].onValueChanged.AddListener(OnValueChanged);
             }
+            _localState = nSelected; // Set the local state to the selected toggle index
+            _reportedState = nSelected; // Set the reported state to the selected toggle index
         }
 
         void OnDisable()

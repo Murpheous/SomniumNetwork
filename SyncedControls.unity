@@ -2922,7 +2922,7 @@ MonoBehaviour:
     Free:
       Count: 4
       MaxCount: 10
-      AvailableSize: 277682160
+      AvailableSize: 277678864
     Paid:
       Entries: []
   OwnedTokens: []
