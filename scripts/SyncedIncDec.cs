@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace SyncedControls.Example
 {
@@ -16,7 +17,7 @@ namespace SyncedControls.Example
         [SerializeField] int _maxValue = 10;
 
 
-        public integerEvent onValue;
+        public UnityEvent<int> onValue;
 
         [Header("Just here to see in inspector")]
         [SerializeField]
@@ -114,7 +115,8 @@ namespace SyncedControls.Example
 
         void Awake()
         {
-            onValue = new integerEvent();
+            if (onValue == null)
+                onValue = new UnityEvent<int>();
             if (networkedRigidBody == null)
             {
                 networkedRigidBody = GetComponentInChildren<Rigidbody>();

@@ -3,10 +3,6 @@ using UnityEngine.Events;
 
 namespace SyncedControls.Example
 {
-    public class floatEvent : UnityEvent<float> { }
-    public class toggleEvent : UnityEvent<bool> { }
-    public class integerEvent : UnityEvent<int> { }
-
     public interface ITweenClient
     {
         public void UpdateTween(float value);

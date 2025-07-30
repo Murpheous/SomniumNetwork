@@ -300,9 +300,9 @@ namespace SyncedControls.Example
                 networkObject = networkedRigibody.GetComponent<NetworkObject>();
             }
             if (OnValueChanged == null)
-                OnValueChanged = new floatEvent();
+                OnValueChanged = new UnityEvent<float>();
             if (OnPointerMovement == null)
-                OnPointerMovement = new toggleEvent();
+                OnPointerMovement = new UnityEvent<bool>();
             mySlider = GetComponent<Slider>();
             mySlider.onValueChanged.AddListener(OnSliderValue);
             //setCursorTrack();

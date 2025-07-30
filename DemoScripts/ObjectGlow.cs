@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SyncedControls.Example
@@ -57,18 +55,18 @@ namespace SyncedControls.Example
             // Ensure the object has a Renderer component
             if (meshRenderer == null)
             {
-                Debug.LogError("ObjectGlow requires a Renderer component.");
+                DebugUI.LogError("ObjectGlow requires a Renderer component.");
                 return;
             }
             glowMaterial = meshRenderer.material;
             if (glowMaterial == null)
             {
-                Debug.LogError("ObjectGlow requires a material to be assigned.");
+                DebugUI.LogError("ObjectGlow requires a material to be assigned.");
                 return;
             }
             if (glowMaterial.HasProperty("_EmissionColor"))
             {
-                Debug.Log($"ObjectGlow: {gameObject.name} supports emission.");
+                DebugUI.Log($"ObjectGlow: {gameObject.name} supports emission.");
                 glowMaterial.EnableKeyword("_EMISSION");
                 hasEmission = true;
             }

@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace SyncedControls.Example
 {
@@ -12,7 +13,7 @@ namespace SyncedControls.Example
         [SerializeField] ToggleGroup togGroup;
         [SerializeField] Toggle[] toggles;
 
-        public integerEvent onSelectionChanged;
+        public UnityEvent<int> onSelectionChanged;
 
         [Header("Just here to see in inspector")]
         [SerializeField]
@@ -104,7 +105,8 @@ namespace SyncedControls.Example
         void Awake()
         {
             togGroup = GetComponent<ToggleGroup>();
-            onSelectionChanged = new integerEvent();
+            if (onSelectionChanged == null)
+                onSelectionChanged = new UnityEvent<int>();
             if (togGroup == null)
                 togGroup = GetComponent<ToggleGroup>();
             if (networkedRigidBody == null)
@@ -120,17 +122,6 @@ namespace SyncedControls.Example
 
         public void Start()
         {
-            for (int i = 0; i < toggles.Length; i++)
-            {
-                if (toggles[i] == null)
-                {
-                    Debug.LogError("Toggle at index " + i + " is null. Please assign all toggles in the inspector.");
-                    continue;
-                }
-                toggles[i].group = togGroup;
-                toggles[i].SetIsOnWithoutNotify(i == _reportedState);
-                toggles[i].onValueChanged.AddListener(OnValueChanged);
-            }
             numToggles = toggles.Length > 0 ? toggles.Length : 1;
             rbState = _reportedState;
             started = true;
@@ -138,10 +129,29 @@ namespace SyncedControls.Example
 
         void OnEnable()
         {
+            for (int i = 0; i < toggles.Length; i++)
+            {
+                if (toggles[i] == null)
+                {
+                    DebugUI.LogError($"{gameObject.name}:Toggle at index {i} is null.");
+                    continue;
+                }
+                toggles[i].group = togGroup;
+                toggles[i].SetIsOnWithoutNotify(i == _reportedState);
+                toggles[i].onValueChanged.AddListener(OnValueChanged);
+            }
         }
 
         void OnDisable()
         {
+            for (int i = 0; i < toggles.Length; i++)
+            {
+                if (toggles[i] == null)
+                {
+                    continue;
+                }
+                toggles[i].onValueChanged.RemoveListener(OnValueChanged);
+            }
         }
 
         // Update is called once per frame
