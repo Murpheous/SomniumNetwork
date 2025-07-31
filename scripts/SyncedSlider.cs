@@ -56,9 +56,19 @@ namespace SyncedControls.Example
         private NetworkObject networkObject;
         // Event to report synced value changes
         [SerializeField]
-        public UnityEvent<float> OnValueChanged;
+        private UnityEvent<float> onValueChanged;
+
+        public UnityEvent<float> OnValueChanged
+        {
+            get => onValueChanged;
+        }
         // Event to report pointer state
-        public UnityEvent<bool> OnPointerMovement;
+        private UnityEvent<bool> onPointerMovement;
+
+        public UnityEvent<bool> OnPointerMovement
+        {
+            get => onPointerMovement;
+        }
 
         // Flag to indicate if the pointer is currently down
         private bool _pointerIsMoving = false;
@@ -243,7 +253,7 @@ namespace SyncedControls.Example
             private set
             {
                 _reportedValue = value;
-                OnValueChanged.Invoke(_reportedValue);
+                onValueChanged.Invoke(_reportedValue);
             }
         }
 
@@ -276,7 +286,7 @@ namespace SyncedControls.Example
             if (Mathf.Abs(_reportedValue - _syncedValue) > smoothThreshold)
             {
                 if (!isSmoothing)
-                    OnPointerMovement.Invoke(true);
+                    onPointerMovement.Invoke(true);
                 isSmoothing = true;
                 ReportedValue = Mathf.SmoothDamp(_reportedValue, _syncedValue, ref smthVel, 0.1f * smoothRate);
             }
@@ -286,7 +296,7 @@ namespace SyncedControls.Example
                 if (isSmoothing)
                 {
                     isSmoothing = false;
-                    OnPointerMovement.Invoke(false);
+                    onPointerMovement.Invoke(false);
                 }
             }
         }
@@ -299,10 +309,10 @@ namespace SyncedControls.Example
                 rbTransform = networkedRigibody.transform;
                 networkObject = networkedRigibody.GetComponent<NetworkObject>();
             }
-            if (OnValueChanged == null)
-                OnValueChanged = new UnityEvent<float>();
-            if (OnPointerMovement == null)
-                OnPointerMovement = new UnityEvent<bool>();
+            if (onValueChanged == null)
+                onValueChanged = new UnityEvent<float>();
+            if (onPointerMovement == null)
+                onPointerMovement = new UnityEvent<bool>();
             mySlider = GetComponent<Slider>();
             mySlider.onValueChanged.AddListener(OnSliderValue);
             //setCursorTrack();

@@ -8,8 +8,10 @@ namespace SyncedControls.Example
         public void UpdateTween(float value);
     }
 
-    public interface ISliderInterface 
+    public interface ISliderInterface
     {
+        public UnityEvent<float> OnValueChanged { get; }
+        public UnityEvent<bool> OnPointerMovement { get; }
         public bool PointerIsMoving { get; }
 
         public bool Interactable { get; set; }
@@ -25,6 +27,6 @@ namespace SyncedControls.Example
 
         public string TypeText { get; set; }
         public string ValueSuffix { get; set; }
-
     }
 }
+
