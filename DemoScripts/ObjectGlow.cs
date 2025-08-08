@@ -13,7 +13,8 @@ namespace SyncedControls.Example
         private float glowIntensity = 1.0f; // Default intensity
         private MeshRenderer meshRenderer;
         private Material glowMaterial;
-
+        [SerializeField]
+        private bool debug = false;
         public Color GlowColor
         {
             get { return glowColor; }
@@ -55,7 +56,8 @@ namespace SyncedControls.Example
             // Ensure the object has a Renderer component
             if (meshRenderer == null)
             {
-                DebugUI.LogError("ObjectGlow requires a Renderer component.");
+                if (debug) 
+                    DebugUI.LogError("ObjectGlow requires a Renderer component.");
                 return;
             }
             glowMaterial = meshRenderer.material;
@@ -66,13 +68,14 @@ namespace SyncedControls.Example
             }
             if (glowMaterial.HasProperty("_EmissionColor"))
             {
-                DebugUI.Log($"ObjectGlow: {gameObject.name} supports emission.");
+                if (debug)
+                    DebugUI.Log($"ObjectGlow: {gameObject.name} supports emission.");
                 glowMaterial.EnableKeyword("_EMISSION");
                 hasEmission = true;
             }
             else
             {
-                Debug.LogWarning("The assigned material does not support emission.");
+                Debug.LogWarning($"{gameObject.name}The assigned material does not support emission.");
                 hasEmission = false;
             }
         }

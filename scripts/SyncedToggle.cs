@@ -13,13 +13,11 @@ namespace SyncedControls.Example
         [SerializeField]
         Toggle toggle;
         [SerializeField]
-        Rigidbody networkedRigidBody;
+        Transform syncedTransform;
 
         public UnityEvent<bool> onValueChanged;
 
         [Header("Just here to see in inspector")]
-        [SerializeField]
-        private Transform rbTransform;
         [SerializeField]
         private bool _localState = false;
         [SerializeField]
@@ -31,13 +29,13 @@ namespace SyncedControls.Example
         { 
             get 
             {
-                if (rbTransform == null)
+                if (syncedTransform == null)
                     return _localState;
-                return rbTransform.localEulerAngles.y != 0;
+                return syncedTransform.localEulerAngles.y != 0;
             } 
             set 
             {
-                if (rbTransform == null)
+                if (syncedTransform == null)
                     return;
                 NetworkState = value; // Set the Rigidbody's state
             }
@@ -45,7 +43,7 @@ namespace SyncedControls.Example
 
         public void SetIsOnWithoutNotify(bool value)
         {
-            if (rbTransform == null)
+            if (syncedTransform == null)
             {
                 _localState = value;
                 toggle.SetIsOnWithoutNotify(value);
@@ -59,13 +57,13 @@ namespace SyncedControls.Example
         { 
             get 
             {
-                if (rbTransform == null)
+                if (syncedTransform == null)
                     return _localState;
-                return rbTransform.localEulerAngles.y != 0;
+                return syncedTransform.localEulerAngles.y != 0;
             }
             set 
             {
-                if (rbTransform == null)
+                if (syncedTransform == null)
                     return;
                 if (debug) 
                     DebugUI.Log(string.Format("{0} NetworkState({1})", gameObject.name, value));
@@ -74,7 +72,7 @@ namespace SyncedControls.Example
                     if (networkObject.StateAuthority != networkObject.Runner.LocalPlayer)
                         networkObject.RequestStateAuthority();
                 }
-                rbTransform.localEulerAngles = new Vector3(rbTransform.localEulerAngles.x, value ? 180 : 0, rbTransform.localEulerAngles.z);
+                syncedTransform.localEulerAngles = new Vector3(syncedTransform.localEulerAngles.x, value ? 180 : 0, syncedTransform.localEulerAngles.z);
             }        
         }
 
@@ -85,22 +83,17 @@ namespace SyncedControls.Example
             if (toggle == null)
                 toggle = GetComponent<Toggle>();
             _localState = toggle.isOn;
-            if (networkedRigidBody == null)
-            {
-                networkedRigidBody = GetComponentInChildren<Rigidbody>();
-            }
-            if (networkedRigidBody != null)
-            {
-                rbTransform = networkedRigidBody.transform;
-                networkObject = networkedRigidBody.GetComponent<NetworkObject>();
-            }
+            if (syncedTransform == null)
+                syncedTransform = GetComponentInChildren<NetworkTransform>().transform;
+            if (syncedTransform != null)
+                networkObject = syncedTransform.GetComponent<NetworkObject>();
         }
 
         private void Start()
     
         {
             // Initialize the Rigidbody's state based on the toggle's initial state            
-            rbTransform.localEulerAngles = new Vector3(rbTransform.localEulerAngles.x, _localState ? 180 : 0, rbTransform.localEulerAngles.z);
+            syncedTransform.localEulerAngles = new Vector3(syncedTransform.localEulerAngles.x, _localState ? 180 : 0, syncedTransform.localEulerAngles.z);
             _reportedState = _localState; // Initialize reported state
             onValueChanged.Invoke(_localState); // Invoke the event with the initial state
         }
@@ -116,7 +109,7 @@ namespace SyncedControls.Example
         private void onToggleValue(bool isOn)
         {
             _localState = isOn;
-            if (networkedRigidBody != null)
+            if (syncedTransform != null)
             {
                 if (NetworkState != isOn)
                     NetworkState = isOn; // Update the Rigidbody's state
@@ -139,12 +132,12 @@ namespace SyncedControls.Example
         // Update is called once per frame
         void Update()
         {
-            if (rbTransform != null)
+            if (syncedTransform != null)
             {
-                if (rbTransform.hasChanged)
+                if (syncedTransform.hasChanged)
                 { // Check if the rigidbody has moved from its last synced position
-                    rbTransform.hasChanged = false;
-                    bool newValue = Mathf.Abs(rbTransform.localEulerAngles.y) > 90;
+                    syncedTransform.hasChanged = false;
+                    bool newValue = Mathf.Abs(syncedTransform.localEulerAngles.y) > 90;
                     if (newValue != toggle.isOn)
                     {
                         toggle.SetIsOnWithoutNotify(newValue); // Update the toggle state without invoking the event

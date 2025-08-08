@@ -9,15 +9,13 @@ namespace SyncedControls.Example
     public class SyncedToggleGroup : MonoBehaviour
     {
         [SerializeField]
-        Rigidbody networkedRigidBody;
+        Transform syncedTransform;
         [SerializeField] ToggleGroup togGroup;
         [SerializeField] Toggle[] toggles;
 
         public UnityEvent<int> onSelectionChanged;
 
         [Header("Just here to see in inspector")]
-        [SerializeField]
-        private Transform rbTransform;
         [SerializeField]
         private int _localState = -1;
         [SerializeField]
@@ -45,20 +43,20 @@ namespace SyncedControls.Example
         {
             get
             {
-                if (rbTransform == null)
+                if (syncedTransform == null)
                     return _localState;
-                return Mathf.RoundToInt(rbTransform.eulerAngles.y);
+                return Mathf.RoundToInt(syncedTransform.eulerAngles.y);
             }
             set
             {
-                if (rbTransform == null)
+                if (syncedTransform == null)
                     return;
                 if (networkObject != null && (networkObject.Runner != null))
                 {
                     if (!networkObject.HasStateAuthority)
                         networkObject.RequestStateAuthority();
                 }
-                rbTransform.eulerAngles = new Vector3(rbTransform.eulerAngles.x, value, rbTransform.eulerAngles.z);
+                syncedTransform.eulerAngles = (new Vector3(0, value, 0));
             }
         }
 
@@ -109,14 +107,11 @@ namespace SyncedControls.Example
                 onSelectionChanged = new UnityEvent<int>();
             if (togGroup == null)
                 togGroup = GetComponent<ToggleGroup>();
-            if (networkedRigidBody == null)
+            if (syncedTransform == null)
+                syncedTransform = GetComponentInChildren<NetworkTransform>().transform;
+            if (syncedTransform != null)
             {
-                networkedRigidBody = GetComponentInChildren<Rigidbody>();
-            }
-            if (networkedRigidBody != null)
-            {
-                rbTransform = networkedRigidBody.transform;
-                networkObject = networkedRigidBody.GetComponent<NetworkObject>();
+                networkObject = syncedTransform.GetComponent<NetworkObject>();
             }
         }
 
@@ -162,20 +157,20 @@ namespace SyncedControls.Example
         // Update is called once per frame
         void Update()
         {
-            if (rbTransform != null)
+            if (syncedTransform != null)
             {
-                if (rbTransform.hasChanged)
+                if (syncedTransform.hasChanged)
                 { // Check if the rigidbody has moved from its last synced position
-                    rbTransform.hasChanged = false;
-                    int newValue = Mathf.RoundToInt(rbTransform.eulerAngles.y);
+                    syncedTransform.hasChanged = false;
+                    int newValue = Mathf.RoundToInt(syncedTransform.eulerAngles.y);
                     if (debug)
                     {
-                        DebugUI.Log(string.Format("{0} Update: <br>   EulerAngles.y={1} newValue={2}", gameObject.name, rbTransform.eulerAngles.y, newValue));
+                        DebugUI.Log($"{gameObject.name} Update: <br>   EulerAngles.y={syncedTransform.eulerAngles.y} newValue={newValue}");
                     }
                     if (newValue != _localState)
                     {
                         if (debug)
-                            DebugUI.Log(string.Format("newValue{0} != _localState={1}",newValue,_localState));
+                            DebugUI.Log($"newValue{newValue} != _localState={_localState}");
                         if (_localState >= 0 && _localState < numToggles && toggles[_localState] != null)
                             toggles[_localState].SetIsOnWithoutNotify(false); // Update the previous toggle state without invoking the event
                         if (newValue >= 0 && newValue < numToggles && toggles[newValue]!=null)

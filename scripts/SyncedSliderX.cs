@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace SyncedControls.Example
 {
     [RequireComponent(typeof(Slider))]
-    public class SyncedSlider : MonoBehaviour,ISliderInterface
+    public class SyncedSliderX : MonoBehaviour,ISliderInterface
     {
         [SerializeField]
         private Transform syncedTransform;
@@ -46,7 +46,7 @@ namespace SyncedControls.Example
         private bool interactable = true;
 
         [Header("Just to see values in the inspector")]
-        [SerializeField] private bool _debug = false;
+
         [SerializeField] private float _syncedValue;
         [SerializeField] private float _reportedValue;
 
@@ -278,8 +278,6 @@ namespace SyncedControls.Example
                     syncedTransform.hasChanged = false;
                     float pos = syncedTransform.localEulerAngles.y / 180f; // Convet +- 180 to +1 to -1 range
                     SyncedCursorPos = Mathf.Clamp01(pos);
-                    if (_debug)
-                        DebugUI.Log($"{gameObject.name}SyncedSlider: SyncedCursorPos={SyncedCursorPos}, SyncedValue={SyncedValue}");
                 }
             }
             if (smoothRate <= 0f || _reportedValue == SyncedValue)
