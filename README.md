@@ -16,7 +16,7 @@ Since the current Somnium SDK network bridge partly exposes the functionality of
 
 The core model is that the UI element controls the rotation of the Rigid body transform; Fusion syncs the rotation across the network, updating the rigid body transform accordingly.  
 
-From there, the code in each Synced Control polls the transform—hasChanged flag to invoke the control state events to subscribed components.
+From there, the code in each Synced Control polls the transform.hasChanged flag to invoke the control state events to subscribed components.
 
 ## Arbitration
 
