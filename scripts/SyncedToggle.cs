@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-#if NO_FUSION_SYNC
-#else
+#if FUSION2
 using Fusion;
 #endif
 
@@ -27,24 +26,7 @@ namespace SyncedControls.Example
         private bool _localState = false;
         [SerializeField]
         private bool _reportedState = false;
-#if NO_FUSION_SYNC
-        // No Fusion
-        private void RequestNetAuthority()
-        {
-        }
-        private void checkNetworkObjects()
-        {
-            if (syncedTransform == null)
-            {
-                DebugUI.Log($"{gameObject.name} syncedTransform not set");
-                Rigidbody rb = GetComponentInChildren<Rigidbody>();
-                if (rb != null)
-                    syncedTransform = rb.transform;
-                else
-                    DebugUI.Log($"{gameObject.name} no rigidbody");
-            }
-        }
-#else
+#if FUSION2
         [SerializeField]
         private NetworkObject networkObject;
         private void RequestNetAuthority()
@@ -81,6 +63,24 @@ namespace SyncedControls.Example
                 DebugUI.LogWarning($"{gameObject.name}: No NetworkObject found");
             }
         }
+#else
+        // No Fusion
+        private void RequestNetAuthority()
+        {
+        }
+        private void checkNetworkObjects()
+        {
+            if (syncedTransform == null)
+            {
+                DebugUI.Log($"{gameObject.name} syncedTransform not set");
+                Rigidbody rb = GetComponentInChildren<Rigidbody>();
+                if (rb != null)
+                    syncedTransform = rb.transform;
+                else
+                    DebugUI.Log($"{gameObject.name} no rigidbody");
+            }
+        }
+
 #endif
         [SerializeField] bool debug = false;
         public bool isOn

@@ -1,6 +1,4 @@
-#if NO_FUSION_SYNC
-
-#else
+#if FUSION2
 using Fusion;
 using Fusion.Sockets;
 using System;

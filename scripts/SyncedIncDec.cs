@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-#if NO_FUSION_SYNC
-#else
+#if FUSION2
 using Fusion;
 #endif
 
@@ -32,20 +31,7 @@ namespace SyncedControls.Example
         private Transform rbTransform;
         [SerializeField]
         private int _reportedValue = -1;
-#if NO_FUSION_SYNC
-        // No Fusion
-        private void RequestNetAuthority()
-        {
-        }
-        private void checkNetworkObjects()
-        {
-            if (syncedRigidBody != null)
-            {
-                if (rbTransform == null)
-                    rbTransform = syncedRigidBody.transform;
-            }
-        }
-#else
+#if FUSION2
         [SerializeField]
         private NetworkObject networkObject;
         private void RequestNetAuthority()
@@ -72,6 +58,20 @@ namespace SyncedControls.Example
                 DebugUI.LogWarning($"{gameObject.name}: No NetworkObject found");
             }
         }
+#else
+        // No Fusion
+        private void RequestNetAuthority()
+        {
+        }
+        private void checkNetworkObjects()
+        {
+            if (syncedRigidBody != null)
+            {
+                if (rbTransform == null)
+                    rbTransform = syncedRigidBody.transform;
+            }
+        }
+
 #endif
         [SerializeField]
         private bool debug = true;

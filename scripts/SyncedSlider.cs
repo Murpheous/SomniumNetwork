@@ -2,8 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-#if NO_FUSION_SYNC
-#else
+#if FUSION2
 using Fusion;
 #endif
 
@@ -54,20 +53,7 @@ namespace SyncedControls.Example
 
         [SerializeField] private float _syncedCursorPos;
         [SerializeField] private float _sliderPos;
-#if NO_FUSION_SYNC
-        // No Fusion
-        private void RequestNetAuthority()
-        {
-        }
-        private void checkNetworkObjects()
-        {
-            if (syncedRigidBody != null)
-            {
-                if (rbTransform == null)
-                    rbTransform = syncedRigidBody.transform;
-            }
-        }
-#else
+#if FUSION2
         [SerializeField]
         private NetworkObject networkObject;
         private void RequestNetAuthority()
@@ -92,6 +78,19 @@ namespace SyncedControls.Example
             if (networkObject == null)
             {
                 DebugUI.LogWarning($"{gameObject.name}: No NetworkObject found");
+            }
+        }
+#else
+        // No Fusion
+        private void RequestNetAuthority()
+        {
+        }
+        private void checkNetworkObjects()
+        {
+            if (syncedRigidBody != null)
+            {
+                if (rbTransform == null)
+                    rbTransform = syncedRigidBody.transform;
             }
         }
 #endif
