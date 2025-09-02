@@ -709,7 +709,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SyncedControls.Example.ObjectGlow, SyncedControls.Example
-        m_MethodName: set_GlowIntensity
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
