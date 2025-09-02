@@ -1,8 +1,10 @@
+#if NO_FUSION_SYNC
+
+#else
 using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace SyncedControls.Example
@@ -52,7 +54,7 @@ namespace SyncedControls.Example
         /// Creators: You can use this to unregister a callback
         public static void UnRegisterOnNetworkReady(Action onNetworkReady)
         {
-            if(onNetworkReady != null)
+            if (onNetworkReady != null)
                 _onLocalPlayerJoined -= onNetworkReady;
         }
 
@@ -92,7 +94,7 @@ namespace SyncedControls.Example
         private void InitScenePath()
         {
             NetworkSceneRef = SceneRef.FromPath(gameObject.scene.path);
-            if(!NetworkSceneRef.IsValid)
+            if (!NetworkSceneRef.IsValid)
                 DebugUI.LogError(nameof(SceneNetworking), "Scene reference is not valid ! " + gameObject.scene.name + ", " + gameObject.scene.path);
         }
 
@@ -240,7 +242,8 @@ namespace SyncedControls.Example
 
         private string GetTime()
         {
-            return (Time.time - _t0).ToString("F2")+"s";
+            return (Time.time - _t0).ToString("F2") + "s";
         }
     }
 }
+#endif

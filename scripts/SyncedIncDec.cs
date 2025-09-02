@@ -1,37 +1,83 @@
-using Fusion;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
+#if NO_FUSION_SYNC
+#else
+using Fusion;
+#endif
 
 namespace SyncedControls.Example
 {
     public class SyncedIncDec : MonoBehaviour
     {
         [SerializeField]
-        Rigidbody networkedRigidBody;
+        Rigidbody syncedRigidBody;
         [SerializeField] Button IncButton;
         [SerializeField] Button DecButton;
 
         [SerializeField] int _value = 0;
-        [SerializeField] int _minValue = 0;
-        [SerializeField] int _maxValue = 10;
+        [SerializeField] int minValue = 0;
+        [SerializeField] int maxValue = 10;
 
+        [SerializeField]
+        private UnityEvent<int> onValue;
 
-        public UnityEvent<int> onValue;
+        public UnityEvent<int> OnValue
+        {
+            get => onValue;
+        }
 
         [Header("Just here to see in inspector")]
         [SerializeField]
         private Transform rbTransform;
         [SerializeField]
         private int _reportedValue = -1;
+#if NO_FUSION_SYNC
+        // No Fusion
+        private void RequestNetAuthority()
+        {
+        }
+        private void checkNetworkObjects()
+        {
+            if (syncedRigidBody != null)
+            {
+                if (rbTransform == null)
+                    rbTransform = syncedRigidBody.transform;
+            }
+        }
+#else
         [SerializeField]
         private NetworkObject networkObject;
+        private void RequestNetAuthority()
+        {
+            if (networkObject != null && (networkObject.Runner != null))
+            {
+                if (!networkObject.HasStateAuthority)
+                    networkObject.RequestStateAuthority();
+            }
+        }
 
+        private void checkNetworkObjects()
+        {
+            if (networkObject == null)
+                networkObject = GetComponentInChildren<NetworkObject>();
+            if (syncedRigidBody != null)
+            {
+                rbTransform = syncedRigidBody.transform;
+                if (networkObject == null)
+                    networkObject = syncedRigidBody.GetComponent<NetworkObject>();
+            }
+            if (networkObject == null)
+            {
+                DebugUI.LogWarning($"{gameObject.name}: No NetworkObject found");
+            }
+        }
+#endif
         [SerializeField]
         private bool debug = true;
         private bool started = false;
 
-        public int Value 
+        public int Value
         {
             get => _reportedValue;
             set
@@ -46,22 +92,22 @@ namespace SyncedControls.Example
 
         public int MinValue
         {
-            get => _minValue;
+            get => minValue;
             set
             {
                 if (value < -179)
                     value = 179;
-                _minValue = value;
+                minValue = value;
             }
         }
         public int MaxValue
         {
-            get => _maxValue;
+            get => maxValue;
             set
             {
                 if (value > 179)
                     value = 179;
-                _maxValue = value;
+                maxValue = value;
             }
         }
 
@@ -78,54 +124,45 @@ namespace SyncedControls.Example
             {
                 if (rbTransform == null)
                     return;
-                if (networkObject != null && (networkObject.Runner != null))
-                {
-                    if (!networkObject.HasStateAuthority)
-                        networkObject.RequestStateAuthority();
-                }
                 rbTransform.eulerAngles = new Vector3(rbTransform.eulerAngles.x, value, rbTransform.eulerAngles.z);
             }
         }
 
         public void onPointerEnter()
         {
-            if (networkObject != null && (networkObject.Runner != null))
-            {
-                if (!networkObject.HasStateAuthority)
-                    networkObject.RequestStateAuthority();
-            }
+            RequestNetAuthority();
         }
+
         public void incValue()
         {
-            int incValue = Mathf.Clamp(_value + 1, _minValue, _maxValue);
+            int incValue = Mathf.Clamp(_value + 1, minValue, maxValue);
             if (_reportedValue != incValue)
+            {
                 rbValue = incValue;
-            if (debug)
-                DebugUI.Log(string.Format("senting value={0}",incValue));
+                if (debug)
+                    DebugUI.Log($"{gameObject.name}:IncDec + to {incValue}");
+            }
         }
 
         public void decValue()
         {
-            int decValue = Mathf.Clamp(_value - 1, _minValue, _maxValue);
+            int decValue = Mathf.Clamp(_value - 1, minValue, maxValue);
             if (_reportedValue != decValue)
+            {
                 rbValue = decValue;
-            if (debug)
-                DebugUI.Log(string.Format("value={0}", decValue));
+                if (debug)
+                    DebugUI.Log($"{gameObject.name}:IncDec - to {decValue}");
+            }
         }
-
         void Awake()
         {
             if (onValue == null)
                 onValue = new UnityEvent<int>();
-            if (networkedRigidBody == null)
+            if (syncedRigidBody == null)
             {
-                networkedRigidBody = GetComponentInChildren<Rigidbody>();
+                syncedRigidBody = GetComponentInChildren<Rigidbody>();
             }
-            if (networkedRigidBody != null)
-            {
-                rbTransform = networkedRigidBody.transform;
-                networkObject = networkedRigidBody.GetComponent<NetworkObject>();
-            }
+            checkNetworkObjects();
         }
 
         public void Start()
@@ -136,10 +173,18 @@ namespace SyncedControls.Example
 
         void OnEnable()
         {
+            if (IncButton != null)
+                IncButton.onClick.AddListener(incValue);
+            if (DecButton != null)
+                DecButton.onClick.AddListener(decValue);
         }
 
         void OnDisable()
         {
+            if (IncButton != null)
+                IncButton.onClick.RemoveListener(incValue);
+            if (DecButton != null)
+                DecButton.onClick.RemoveListener(decValue);
         }
 
         // Update is called once per frame
@@ -150,15 +195,13 @@ namespace SyncedControls.Example
                 if (rbTransform.hasChanged)
                 { // Check if the rigidbody has moved from its last synced position
                     rbTransform.hasChanged = false;
-                    int newValue = Mathf.Clamp(Mathf.RoundToInt(rbTransform.eulerAngles.y),_minValue,_maxValue);
+                    int newValue = Mathf.Clamp(Mathf.RoundToInt(rbTransform.eulerAngles.y), minValue, maxValue);
                     if (debug)
-                    {
-                        DebugUI.Log(string.Format("{0} Update: <br>   EulerAngles.y={1} newValue={2}", gameObject.name, rbTransform.eulerAngles.y, newValue));
-                    }
+                        DebugUI.Log($"{gameObject.name} Update: <br>   EulerAngles.y={rbTransform.eulerAngles.y} newValue={newValue}");
                     if (newValue != _value)
                     {
                         if (debug)
-                            DebugUI.Log(string.Format("newValue{0} != _value={1}",newValue,_value));
+                            DebugUI.Log($"newValue{newValue} != _value={_value}");
                         _value = newValue; // Update the local state
                     }
                     if (_reportedValue != newValue)

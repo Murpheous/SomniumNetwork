@@ -1,17 +1,19 @@
-﻿
-using Fusion;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+#if NO_FUSION_SYNC
+#else
+using Fusion;
+#endif
 
 namespace SyncedControls.Example
 {
     [RequireComponent(typeof(Slider))]
-    public class SyncedSlider : MonoBehaviour,ISliderInterface
+    public class SyncedSlider : MonoBehaviour, ISliderInterface
     {
         [SerializeField]
-        private Transform syncedTransform;
+        private Rigidbody syncedRigidBody;
         private Slider mySlider;
         [Header("Smoothing settings")]
         [SerializeField, Range(0f, 5f), Tooltip("Apply damping by setting above zero")]
@@ -46,30 +48,66 @@ namespace SyncedControls.Example
         private bool interactable = true;
 
         [Header("Just to see values in the inspector")]
-        [SerializeField] private bool _debug = false;
+
         [SerializeField] private float _syncedValue;
         [SerializeField] private float _reportedValue;
 
         [SerializeField] private float _syncedCursorPos;
         [SerializeField] private float _sliderPos;
-        //[SerializeField] 
+#if NO_FUSION_SYNC
+        // No Fusion
+        private void RequestNetAuthority()
+        {
+        }
+        private void checkNetworkObjects()
+        {
+            if (syncedRigidBody != null)
+            {
+                if (rbTransform == null)
+                    rbTransform = syncedRigidBody.transform;
+            }
+        }
+#else
+        [SerializeField]
         private NetworkObject networkObject;
+        private void RequestNetAuthority()
+        {
+            if (networkObject != null && (networkObject.Runner != null))
+            {
+                if (!networkObject.HasStateAuthority)
+                    networkObject.RequestStateAuthority();
+            }
+        }
+
+        private void checkNetworkObjects()
+        {
+            if (syncedRigidBody == null)
+                syncedRigidBody = GetComponentInChildren<Rigidbody>();
+            if (syncedRigidBody != null)
+            {
+                rbTransform = syncedRigidBody.transform;
+                if (networkObject == null)
+                    networkObject = syncedRigidBody.GetComponent<NetworkObject>();
+            }
+            if (networkObject == null)
+            {
+                DebugUI.LogWarning($"{gameObject.name}: No NetworkObject found");
+            }
+        }
+#endif
         // Event to report synced value changes
         [SerializeField]
-        private UnityEvent<float> onValueChanged;
-
+        public UnityEvent<float> onValueChanged;
         public UnityEvent<float> OnValueChanged
         {
             get => onValueChanged;
         }
         // Event to report pointer state
-        private UnityEvent<bool> onPointerMovement;
-
+        public UnityEvent<bool> onPointerMovement;
         public UnityEvent<bool> OnPointerMovement
         {
             get => onPointerMovement;
         }
-
         // Flag to indicate if the pointer is currently down
         private bool _pointerIsMoving = false;
         public bool PointerIsMoving
@@ -149,11 +187,7 @@ namespace SyncedControls.Example
                 {
                     if (mySlider.value != value)
                         mySlider.SetValueWithoutNotify(value);
-                    if (networkObject != null && (networkObject.Runner != null))
-                    {
-                        if (networkObject.StateAuthority != networkObject.Runner.LocalPlayer)
-                            networkObject.RequestStateAuthority();
-                    }
+                    RequestNetAuthority();
                     setSyncedValue(value);
                 }
             }
@@ -230,11 +264,11 @@ namespace SyncedControls.Example
 
         private void setSyncedValue(float value)
         {
-            if (syncedTransform != null)
+            if (rbTransform != null)
             {
-                Vector3 localRotation = syncedTransform.localRotation.eulerAngles;
+                Vector3 localRotation = rbTransform.localRotation.eulerAngles;
                 localRotation.y = value * 180f; // Assuming full range of the slider is +- 1
-                syncedTransform.localEulerAngles = localRotation;
+                rbTransform.localEulerAngles = localRotation;
             }
         }
 
@@ -253,33 +287,28 @@ namespace SyncedControls.Example
             private set
             {
                 _reportedValue = value;
-                onValueChanged.Invoke(_reportedValue);
+                OnValueChanged.Invoke(_reportedValue);
             }
         }
 
         public void onPointer(bool value)
         {
             // Main purpose of pointer on slider is to grab network Authority
-            if (value && networkObject != null && networkObject.Runner != null)
-            {
-                if (networkObject.StateAuthority != networkObject.Runner.LocalPlayer)
-                    networkObject.RequestStateAuthority();
-            }
+            RequestNetAuthority();
         }
 
+        private Transform rbTransform = null;
         private float smthVel = 0;
         private bool isSmoothing = false;
         private void Update()
         {
-            if (syncedTransform != null)
+            if (rbTransform != null)
             {
-                if (syncedTransform.hasChanged)
+                if (rbTransform.hasChanged)
                 { // Check if the rigidbody has moved from its last synced position
-                    syncedTransform.hasChanged = false;
-                    float pos = syncedTransform.localEulerAngles.y / 180f; // Convet +- 180 to +1 to -1 range
+                    rbTransform.hasChanged = false;
+                    float pos = rbTransform.localEulerAngles.y / 180f; // Convet +- 180 to +1 to -1 range
                     SyncedCursorPos = Mathf.Clamp01(pos);
-                    if (_debug)
-                        DebugUI.Log($"{gameObject.name}SyncedSlider: SyncedCursorPos={SyncedCursorPos}, SyncedValue={SyncedValue}");
                 }
             }
             if (smoothRate <= 0f || _reportedValue == SyncedValue)
@@ -287,7 +316,7 @@ namespace SyncedControls.Example
             if (Mathf.Abs(_reportedValue - _syncedValue) > smoothThreshold)
             {
                 if (!isSmoothing)
-                    onPointerMovement.Invoke(true);
+                    OnPointerMovement.Invoke(true);
                 isSmoothing = true;
                 ReportedValue = Mathf.SmoothDamp(_reportedValue, _syncedValue, ref smthVel, 0.1f * smoothRate);
             }
@@ -297,7 +326,7 @@ namespace SyncedControls.Example
                 if (isSmoothing)
                 {
                     isSmoothing = false;
-                    onPointerMovement.Invoke(false);
+                    OnPointerMovement.Invoke(false);
                 }
             }
         }
@@ -305,10 +334,7 @@ namespace SyncedControls.Example
         private bool started = false;
         public void Awake()
         {
-            if (syncedTransform != null)
-            {
-                networkObject = syncedTransform.GetComponent<NetworkObject>();
-            }
+            checkNetworkObjects();
             if (onValueChanged == null)
                 onValueChanged = new UnityEvent<float>();
             if (onPointerMovement == null)
@@ -326,10 +352,10 @@ namespace SyncedControls.Example
         {
             float cursorPos = Mathf.Clamp01(Mathf.InverseLerp(minValue, maxValue, _value));
             mySlider.SetValueWithoutNotify(cursorPos);
-            if (syncedTransform != null)
+            if (rbTransform != null)
             {
                 setSyncedValue(cursorPos);
-                syncedTransform.hasChanged = true;
+                rbTransform.hasChanged = true;
             }
             mySlider.interactable = interactable;
             UpdateLabel();

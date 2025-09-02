@@ -266,7 +266,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Wall 2
+  m_text: 'Wall 1
 
     Glow'
   m_isRightToLeft: 0
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb7c7b654b83c3c4a93555824fa69f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncedTransform: {fileID: 2198849897085508008}
+  syncedRigidBody: {fileID: 4119085147013836739}
   smoothRate: 3
   smoothThreshold: 0.003
   sliderLabel: {fileID: 8969571752612064773}
@@ -699,12 +699,27 @@ MonoBehaviour:
   maxValue: 1
   minValue: 0
   interactable: 1
-  _debug: 0
   _syncedValue: 0
   _reportedValue: 0
   _syncedCursorPos: 0
   _sliderPos: 0
+  networkObject: {fileID: 3918879735833141479}
   onValueChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SyncedControls.Example.ObjectGlow, SyncedControls.Example
+        m_MethodName: set_GlowIntensity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPointerMovement:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &7871425695049191787
@@ -784,10 +799,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2935415160274746968, guid: 3a859a11e6acd274c9f24e6e701938ae,
+        type: 3}
+      propertyPath: SortKey
+      value: 837241921
+      objectReference: {fileID: 0}
     - target: {fileID: 5594426931943662508, guid: 3a859a11e6acd274c9f24e6e701938ae,
         type: 3}
       propertyPath: m_Name
-      value: SyncedNetworkTransform
+      value: SyncedRigidBody
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -797,6 +817,24 @@ PrefabInstance:
 --- !u!4 &2198849897085508008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 26452629313341207, guid: 3a859a11e6acd274c9f24e6e701938ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 2224242557862764223}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3918879735833141479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2935415160274746968, guid: 3a859a11e6acd274c9f24e6e701938ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 2224242557862764223}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &4119085147013836739 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 2880041844521021820, guid: 3a859a11e6acd274c9f24e6e701938ae,
     type: 3}
   m_PrefabInstance: {fileID: 2224242557862764223}
   m_PrefabAsset: {fileID: 0}

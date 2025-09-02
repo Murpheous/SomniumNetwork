@@ -49,7 +49,7 @@ namespace SyncedControls.Example
             if (selector != null)
             {
                 ColorIndex = selector.State;
-                selector.onSelectionChanged.AddListener((v) => ColorIndex = v);
+                selector.OnSelectionChanged.AddListener((v) => ColorIndex = v);
             }
 
         }
@@ -58,7 +58,7 @@ namespace SyncedControls.Example
         {
             if (selector != null)
             {
-                selector.onSelectionChanged.RemoveListener((v) => ColorIndex = v);
+                selector.OnSelectionChanged.RemoveListener((v) => ColorIndex = v);
             }
         }
 

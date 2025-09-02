@@ -1,9 +1,10 @@
-using Fusion;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+#if NO_FUSION_SYNC
+#else
+using Fusion;
+#endif
 
 namespace SyncedControls.Example
 {
@@ -14,97 +15,134 @@ namespace SyncedControls.Example
         Toggle toggle;
         [SerializeField]
         Transform syncedTransform;
-
-        public UnityEvent<bool> onValueChanged;
+        [SerializeField]
+        private UnityEvent<bool> onValueChanged;
+        public UnityEvent<bool> OnValueChanged
+        {
+            get => onValueChanged;
+        }
 
         [Header("Just here to see in inspector")]
         [SerializeField]
         private bool _localState = false;
         [SerializeField]
         private bool _reportedState = false;
-        //[SerializeField] 
+#if NO_FUSION_SYNC
+        // No Fusion
+        private void RequestNetAuthority()
+        {
+        }
+        private void checkNetworkObjects()
+        {
+            if (syncedTransform == null)
+            {
+                DebugUI.Log($"{gameObject.name} syncedTransform not set");
+                Rigidbody rb = GetComponentInChildren<Rigidbody>();
+                if (rb != null)
+                    syncedTransform = rb.transform;
+                else
+                    DebugUI.Log($"{gameObject.name} no rigidbody");
+            }
+        }
+#else
+        [SerializeField]
         private NetworkObject networkObject;
+        private void RequestNetAuthority()
+        {
+            if (networkObject != null && (networkObject.Runner != null))
+            {
+                if (!networkObject.HasStateAuthority)
+                    networkObject.RequestStateAuthority();
+            }
+        }
+
+        private void checkNetworkObjects()
+        {
+            if (networkObject == null)
+                networkObject = GetComponentInChildren<NetworkObject>();
+
+            if (syncedTransform == null)
+            {
+                DebugUI.Log($"{gameObject.name} syncedTransform not set");
+                Rigidbody rb = GetComponentInChildren<Rigidbody>();
+                if (rb != null)
+                    syncedTransform = rb.transform;
+                else
+                    DebugUI.Log($"{gameObject.name} no rigidbody");
+            }
+
+            if (syncedTransform != null)
+            {
+                if (networkObject == null)
+                    networkObject = syncedTransform.GetComponent<NetworkObject>();
+            }
+            if (networkObject == null)
+            {
+                DebugUI.LogWarning($"{gameObject.name}: No NetworkObject found");
+            }
+        }
+#endif
         [SerializeField] bool debug = false;
-        public bool isOn 
-        { 
-            get 
+        public bool isOn
+        {
+            get => NetworkState;
+            set
             {
-                if (syncedTransform == null)
-                    return _localState;
-                return syncedTransform.localEulerAngles.y != 0;
-            } 
-            set 
-            {
-                if (syncedTransform == null)
-                    return;
                 NetworkState = value; // Set the Rigidbody's state
             }
         }
 
         public void SetIsOnWithoutNotify(bool value)
         {
-            if (syncedTransform == null)
-            {
-                _localState = value;
-                toggle.SetIsOnWithoutNotify(value);
-                return;
-            }
             NetworkState = value;
             _reportedState = value;
         }
 
-        private bool NetworkState 
-        { 
-            get 
+        private bool NetworkState
+        {
+            get
             {
                 if (syncedTransform == null)
-                    return _localState;
+                    return toggle.isOn;
                 return syncedTransform.localEulerAngles.y != 0;
             }
-            set 
+            set
             {
                 if (syncedTransform == null)
-                    return;
-                if (debug) 
-                    DebugUI.Log(string.Format("{0} NetworkState({1})", gameObject.name, value));
-                if (networkObject != null && (networkObject.Runner != null))
                 {
-                    if (networkObject.StateAuthority != networkObject.Runner.LocalPlayer)
-                        networkObject.RequestStateAuthority();
+                    _localState = value;
+                    toggle.SetIsOnWithoutNotify(value);
+                    return;
                 }
-                syncedTransform.localEulerAngles = new Vector3(syncedTransform.localEulerAngles.x, value ? 180 : 0, syncedTransform.localEulerAngles.z);
-            }        
+                if (debug)
+                    DebugUI.Log(string.Format("{0} NetworkState({1})", gameObject.name, value));
+                RequestNetAuthority();
+                syncedTransform.localEulerAngles = new Vector3(0, value ? 180 : 0, 0);
+            }
         }
 
+        private void OnValidate()
+        {
+            if (toggle == null)
+                toggle = GetComponent<Toggle>();
+        }
         void Awake()
-        {   
+        {
+            checkNetworkObjects();
             if (onValueChanged == null)
                 onValueChanged = new UnityEvent<bool>();
             if (toggle == null)
                 toggle = GetComponent<Toggle>();
             _localState = toggle.isOn;
-            if (syncedTransform == null)
-                syncedTransform = GetComponentInChildren<NetworkTransform>().transform;
             if (syncedTransform != null)
-                networkObject = syncedTransform.GetComponent<NetworkObject>();
-        }
-
-        private void Start()
-    
-        {
-            // Initialize the Rigidbody's state based on the toggle's initial state            
-            syncedTransform.localEulerAngles = new Vector3(syncedTransform.localEulerAngles.x, _localState ? 180 : 0, syncedTransform.localEulerAngles.z);
-            _reportedState = _localState; // Initialize reported state
-            onValueChanged.Invoke(_localState); // Invoke the event with the initial state
+            {
+                syncedTransform.localEulerAngles = new Vector3(0, _localState ? 180 : 0, 0);
+            }
         }
 
         public void onPointerEnter()
         {
-            if (networkObject != null && (networkObject.Runner != null))
-            {
-                if (networkObject.StateAuthority != networkObject.Runner.LocalPlayer)
-                    networkObject.RequestStateAuthority();
-            }
+            RequestNetAuthority();
         }
         private void onToggleValue(bool isOn)
         {
@@ -112,7 +150,9 @@ namespace SyncedControls.Example
             if (syncedTransform != null)
             {
                 if (NetworkState != isOn)
+                {
                     NetworkState = isOn; // Update the Rigidbody's state
+                }
             }
             else
             {

@@ -1,7 +1,10 @@
-using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+#if NO_FUSION_SYNC
+#else
+using Fusion;
+#endif
 
 namespace SyncedControls.Example
 {
@@ -12,21 +15,75 @@ namespace SyncedControls.Example
         Transform syncedTransform;
         [SerializeField] ToggleGroup togGroup;
         [SerializeField] Toggle[] toggles;
+        [SerializeField] private UnityEvent<int> onSelectionChanged;
 
-        public UnityEvent<int> onSelectionChanged;
+        public UnityEvent<int> OnSelectionChanged { get => onSelectionChanged; }
 
         [Header("Just here to see in inspector")]
         [SerializeField]
         private int _localState = -1;
         [SerializeField]
         private int _reportedState = -1;
+#if NO_FUSION_SYNC
+        // No Fusion
+        private void RequestNetAuthority()
+        {
+        }
+        private void checkNetworkObjects()
+        {
+            if (syncedTransform == null)
+            {
+                DebugUI.Log($"{gameObject.name} syncedTransform not set");
+                Rigidbody rb = GetComponentInChildren<Rigidbody>();
+                if (rb != null)
+                    syncedTransform = rb.transform;
+                else
+                    DebugUI.Log($"{gameObject.name} no rigidbody");
+            }
+        }
+#else
         [SerializeField]
         private NetworkObject networkObject;
+        private void RequestNetAuthority()
+        {
+            if (networkObject != null && (networkObject.Runner != null))
+            {
+                if (!networkObject.HasStateAuthority)
+                    networkObject.RequestStateAuthority();
+            }
+        }
+
+        private void checkNetworkObjects()
+        {
+            if (networkObject == null)
+                networkObject = GetComponentInChildren<NetworkObject>();
+
+            if (syncedTransform == null)
+            {
+                DebugUI.Log($"{gameObject.name} syncedTransform not set");
+                Rigidbody rb = GetComponentInChildren<Rigidbody>();
+                if (rb != null)
+                    syncedTransform = rb.transform;
+                else
+                    DebugUI.Log($"{gameObject.name} no rigidbody");
+            }
+
+            if (syncedTransform != null)
+            {
+                if (networkObject == null)
+                    networkObject = syncedTransform.GetComponent<NetworkObject>();
+            }
+            if (networkObject == null)
+            {
+                DebugUI.LogWarning($"{gameObject.name}: No NetworkObject found");
+            }
+        }
+#endif
         private int numToggles = 0;
         [SerializeField]
         private bool debug = false;
         private bool started = false;
-        public int State 
+        public int State
         {
             get => _reportedState;
             set
@@ -51,23 +108,16 @@ namespace SyncedControls.Example
             {
                 if (syncedTransform == null)
                     return;
-                if (networkObject != null && (networkObject.Runner != null))
-                {
-                    if (!networkObject.HasStateAuthority)
-                        networkObject.RequestStateAuthority();
-                }
-                syncedTransform.eulerAngles = (new Vector3(0, value, 0));
+                RequestNetAuthority();
+                syncedTransform.eulerAngles = new Vector3(syncedTransform.eulerAngles.x, value, syncedTransform.eulerAngles.z);
             }
         }
 
         public void onPointerEnter()
         {
-            if (networkObject != null && (networkObject.Runner != null))
-            {
-                if (!networkObject.HasStateAuthority)
-                    networkObject.RequestStateAuthority();
-            }
+            RequestNetAuthority();
         }
+
         public void OnValueChanged(bool value)
         {
             if (toggles == null || toggles.Length == 0)
@@ -92,7 +142,7 @@ namespace SyncedControls.Example
                 }
             }
             if (debug)
-                DebugUI.Log(string.Format("activeToggle={0}",activeToggle));
+                DebugUI.Log(string.Format("activeToggle={0}", activeToggle));
             if (activeToggle != _localState)
             {
                 _localState = activeToggle;
@@ -102,17 +152,12 @@ namespace SyncedControls.Example
 
         void Awake()
         {
-            togGroup = GetComponent<ToggleGroup>();
             if (onSelectionChanged == null)
                 onSelectionChanged = new UnityEvent<int>();
+            togGroup = GetComponent<ToggleGroup>();
             if (togGroup == null)
                 togGroup = GetComponent<ToggleGroup>();
-            if (syncedTransform == null)
-                syncedTransform = GetComponentInChildren<NetworkTransform>().transform;
-            if (syncedTransform != null)
-            {
-                networkObject = syncedTransform.GetComponent<NetworkObject>();
-            }
+            checkNetworkObjects();
         }
 
         public void Start()
@@ -125,7 +170,7 @@ namespace SyncedControls.Example
 
         void OnEnable()
         {
-            int nSelected =  0;
+            int nSelected = 0;
             for (int i = 0; i < toggles.Length; i++)
             {
                 if (toggles[i] == null)
@@ -147,9 +192,7 @@ namespace SyncedControls.Example
             for (int i = 0; i < toggles.Length; i++)
             {
                 if (toggles[i] == null)
-                {
                     continue;
-                }
                 toggles[i].onValueChanged.RemoveListener(OnValueChanged);
             }
         }
@@ -157,32 +200,28 @@ namespace SyncedControls.Example
         // Update is called once per frame
         void Update()
         {
-            if (syncedTransform != null)
+            if (syncedTransform == null || !syncedTransform.hasChanged)
+                return; // If the syncedTransform is not set or changed, do nothing
+            syncedTransform.hasChanged = false;
+            int newValue = Mathf.RoundToInt(syncedTransform.eulerAngles.y);
+            if (debug)
             {
-                if (syncedTransform.hasChanged)
-                { // Check if the rigidbody has moved from its last synced position
-                    syncedTransform.hasChanged = false;
-                    int newValue = Mathf.RoundToInt(syncedTransform.eulerAngles.y);
-                    if (debug)
-                    {
-                        DebugUI.Log($"{gameObject.name} Update: <br>   EulerAngles.y={syncedTransform.eulerAngles.y} newValue={newValue}");
-                    }
-                    if (newValue != _localState)
-                    {
-                        if (debug)
-                            DebugUI.Log($"newValue{newValue} != _localState={_localState}");
-                        if (_localState >= 0 && _localState < numToggles && toggles[_localState] != null)
-                            toggles[_localState].SetIsOnWithoutNotify(false); // Update the previous toggle state without invoking the event
-                        if (newValue >= 0 && newValue < numToggles && toggles[newValue]!=null)
-                            toggles[newValue].SetIsOnWithoutNotify(true); // Update the toggle state without invoking the event
-                        _localState = newValue; // Update the local state
-                    }
-                    if (_reportedState != newValue && newValue < numToggles)
-                    {
-                        onSelectionChanged.Invoke(newValue); // Invoke the event with the new state
-                        _reportedState = newValue; // Update the reported state
-                    }
-                }
+                DebugUI.Log(string.Format("{0} Update: <br>   EulerAngles.y={1} newValue={2}", gameObject.name, syncedTransform.eulerAngles.y, newValue));
+            }
+            if (newValue != _localState)
+            {
+                if (debug)
+                    DebugUI.Log(string.Format("newValue{0} != _localState={1}", newValue, _localState));
+                if (_localState >= 0 && _localState < numToggles && toggles[_localState] != null)
+                    toggles[_localState].SetIsOnWithoutNotify(false); // Update the previous toggle state without invoking the event
+                if (newValue >= 0 && newValue < numToggles && toggles[newValue] != null)
+                    toggles[newValue].SetIsOnWithoutNotify(true); // Update the toggle state without invoking the event
+                _localState = newValue; // Update the local state
+            }
+            if (_reportedState != newValue && newValue < numToggles)
+            {
+                onSelectionChanged.Invoke(newValue); // Invoke the event with the new state
+                _reportedState = newValue; // Update the reported state
             }
         }
     }
