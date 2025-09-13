@@ -3252,7 +3252,7 @@ MonoBehaviour:
     Free:
       Count: 3
       MaxCount: 10
-      AvailableSize: 251055664
+      AvailableSize: 224749104
     Paid:
       Entries: []
   OwnedTokens: []
@@ -3397,7 +3397,7 @@ MonoBehaviour:
     SDKVersion:
       Major: 3
       Minor: 0
-      Patch: 4
+      Patch: 5
     UnityVersion: 2022.3.62f1
     PakagesInfo:
     - Type: 0
@@ -4895,6 +4895,11 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1064289548}
+    - target: {fileID: -742174743550185096, guid: f348c66e40745274387b8bafb7c7e3bf,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_enabled
+      objectReference: {fileID: 0}
     - target: {fileID: 3931899018356448435, guid: f348c66e40745274387b8bafb7c7e3bf,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5448,6 +5453,11 @@ PrefabInstance:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1709662062}
+    - target: {fileID: 93259528935832453, guid: ffa0fe2925302e1489537cb43547fe78,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_GlowIntensity
+      objectReference: {fileID: 0}
     - target: {fileID: 8969571751951368413, guid: ffa0fe2925302e1489537cb43547fe78,
         type: 3}
       propertyPath: m_AnchorMax.x
